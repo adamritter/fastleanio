@@ -1,5 +1,6 @@
 use axum::{Router, routing::{get,post}, extract::{Path,Query,Multipart,DefaultBodyLimit,Request}, response::{IntoResponse,Response,Sse,sse::Event}, middleware::{self,Next}, http::{StatusCode,header,HeaderValue}, Json,Form};
 use serde::Deserialize;
+use axum::serve::ListenerExt;
 use std::{convert::Infallible,sync::atomic::{AtomicU64,Ordering},time::{Duration,Instant,UNIX_EPOCH}};
 use tower::{ServiceExt,service_fn};
 use tower_http::services::ServeDir;
@@ -61,5 +62,5 @@ async fn main(){
   .nest_service("/files",files).route("/sse",get(sse)).route("/sse-later",get(sse_later)).route("/later",get(||async{tokio::time::sleep(Duration::from_millis(2)).await;"later"}))
   .route("/fail",get(||async{(StatusCode::INTERNAL_SERVER_ERROR,"Internal Server Error")}))
   .layer(DefaultBodyLimit::max(1048576)).layer(middleware::from_fn(headers));
- let listener=tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await.unwrap();axum::serve(listener,app).await.unwrap();
+ let listener=tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await.unwrap();let listener=listener.tap_io(|stream|stream.set_nodelay(true).expect("TCP_NODELAY"));axum::serve(listener,app).await.unwrap();
 }
