@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "seed": 462864397274730626,
+  "workers": [
+    1,
+    4
+  ],
+  "checked_cases": 136,
+  "details": [
+    {
+      "workers": 1,
+      "case": "wait-handler",
+      "cancel_seconds": 0.010621104971505702,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "wait-stream",
+      "cancel_seconds": 0.01057988905813545,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 1,
+      "case": "late",
+      "cancel_seconds": 0.010551856947131455,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "backpressure",
+      "pulls_before": 15,
+      "pulls_after": 16
+    },
+    {
+      "workers": 1,
+      "case": "heartbeat",
+      "beats": 70
+    },
+    {
+      "workers": 4,
+      "case": "wait-handler",
+      "cancel_seconds": 0.010726001928560436,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "wait-stream",
+      "cancel_seconds": 0.010604912997223437,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 4,
+      "case": "late",
+      "cancel_seconds": 0.010634097969159484,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "backpressure",
+      "pulls_before": 15,
+      "pulls_after": 16
+    },
+    {
+      "workers": 4,
+      "case": "heartbeat",
+      "beats": 69
+    }
+  ],
+  "binary_sha256": "f61f629f444d7d424095b14718391a7db92521bf9d292bf7b0eaf128eaf1f3c3"
+}

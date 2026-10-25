@@ -1,0 +1,150 @@
+⚠ [30/147] Replayed FastHTTP.TargetProofs
+warning: FastHTTP/TargetProofs.lean:170:14: This simp argument is unused:
+  huser
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, ha, hp, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:21: This simp argument is unused:
+  ha
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, hp, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:25: This simp argument is unused:
+  hp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, ha, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:29: This simp argument is unused:
+  or_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, ha, hp, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:218:68: This simp argument is unused:
+  Bool.or_self
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [halpha, Bool.not_true, hscheme, bne_self_eq_false, Bool.false_eq_true, ↓reduceIte, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:219:28: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [halpha, Bool.not_true, hscheme, bne_self_eq_false, Bool.or_self, Bool.false_eq_true, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:235:19: This simp argument is unused:
+  Bool.or_eq_true
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [decide_eq_true_eq, bne_iff_ne, or_assoc, hh, ↓reduceIte, false_and, or_false]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:238:21: This simp argument is unused:
+  throw
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hscheme]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:239:18: This simp argument is unused:
+  throw
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [halpha]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [60/147] Replayed FastLeanIO.FormCodec
+warning: FastLeanIO/FormCodec.lean:46:12: Variable name `h` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _h
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [66/147] Replayed FastLeanIO.FormCodecProofs
+warning: FastLeanIO/FormCodecProofs.lean:53:14: This simp argument is unused:
+  decodeRev
+
+Hint: Omit it from the simp argument list.
+  [apply] simp_all [standardDecode, percentDecode, replacePlus, List.reverse_cons, List.append_assoc,
+    hexPair_replacePlus]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastLeanIO/FormCodecProofs.lean:54:6: This simp argument is unused:
+  hexPair_replacePlus
+
+Hint: Omit it from the simp argument list.
+  [apply] simp_all [decodeRev, standardDecode, percentDecode, replacePlus, List.reverse_cons, List.append_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastLeanIO/FormCodecProofs.lean:65:17: This simp argument is unused:
+  pair
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+info: FastLeanIO/FormCodecProofs.lean:77:0: 'FastLeanIO.FormCodec.hexPair_all_bytes' does not depend on any axioms
+info: FastLeanIO/FormCodecProofs.lean:78:0: 'FastLeanIO.FormCodec.hexPair_encodeByte' depends on axioms: [propext]
+info: FastLeanIO/FormCodecProofs.lean:79:0: 'FastLeanIO.FormCodec.decodeRev_encodeList' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:80:0: 'FastLeanIO.FormCodec.decodeBytes_encodeBytes' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:81:0: 'FastLeanIO.FormCodec.decodeTextBytes_encodeUTF8' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:82:0: 'FastLeanIO.FormCodec.accepted_agrees_with_standard' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:83:0: 'FastLeanIO.FormCodec.literal_plus' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:84:0: 'FastLeanIO.FormCodec.form_space' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:85:0: 'FastLeanIO.FormCodec.percent_once' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:86:0: 'FastLeanIO.FormCodec.lowercase_hex' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/FormCodecProofs.lean:87:0: 'FastLeanIO.FormCodec.malformed_percent' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [67/147] Replayed FastLeanIO.HTTPProofs
+info: FastLeanIO/HTTPProofs.lean:62:0: 'FastLeanIO.HTTP.prepare_eq_constructor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:63:0: 'FastLeanIO.HTTP.prepareBounded_within' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:64:0: 'FastLeanIO.HTTP.prepareBounded_exceeded' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:65:0: 'FastLeanIO.HTTP.withHeader_body' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:66:0: 'FastLeanIO.HTTP.withHeader_prepare' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:67:0: 'FastLeanIO.HTTP.withStatus_prepare' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:68:0: 'FastLeanIO.HTTP.binary_extractor_exact' does not depend on any axioms
+info: FastLeanIO/HTTPProofs.lean:69:0: 'FastLeanIO.HTTP.withHeader_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:70:0: 'FastLeanIO.HTTP.withStatus_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:71:0: 'FastLeanIO.HTTP.withHeader_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:72:0: 'FastLeanIO.HTTP.withStatus_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [68/147] Replayed FastLeanIO.AppProofs
+info: FastLeanIO/AppProofs.lean:39:0: 'FastLeanIO.App.plan_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:40:0: 'FastLeanIO.App.plan_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:41:0: 'FastLeanIO.App.plan_scoped' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:42:0: 'FastLeanIO.App.execute_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:43:0: 'FastLeanIO.App.buffered_factory_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:44:0: 'FastLeanIO.App.ready_buffered_certified' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:45:0: 'FastLeanIO.App.middleware_preserves_sync' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [69/147] Replayed FastLeanIO.Standards.Proofs
+info: FastLeanIO/Standards/Proofs.lean:112:0: 'FastLeanIO.Standards.boundaryChar_ascii' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:113:0: 'FastLeanIO.Standards.boundaryChar_no_framing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:114:0: 'FastLeanIO.Standards.validBoundary_size' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:115:0: 'FastLeanIO.Standards.validBoundary_alphabet' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:116:0: 'FastLeanIO.Standards.validBoundary_final_nonspace' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:117:0: 'FastLeanIO.Standards.delimiterTail_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:118:0: 'FastLeanIO.Standards.delimiter_lookalike_rejected' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:119:0: 'FastLeanIO.Standards.bearerChar_ascii' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:120:0: 'FastLeanIO.Standards.validBearer_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:121:0: 'FastLeanIO.Standards.validBearer_grammar' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:122:0: 'FastLeanIO.Standards.basicEncoding_shape' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:123:0: 'FastLeanIO.Standards.credentials_no_control' depends on axioms: [propext, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:124:0: 'FastLeanIO.Standards.closedSelection_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:125:0: 'FastLeanIO.Standards.closedSelection_membership' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:126:0: 'FastLeanIO.Standards.suffixSelection_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:127:0: 'FastLeanIO.Standards.suffixSelection_membership' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/Standards/Proofs.lean:128:0: 'FastLeanIO.Standards.range_ignored_non_get' depends on axioms: [propext]
+info: FastLeanIO/Standards/Proofs.lean:129:0: 'FastLeanIO.Standards.range_ignored_empty' depends on axioms: [propext]
+info: FastLeanIO/Standards/Proofs.lean:130:0: 'FastLeanIO.Standards.weak_if_range_ignored' depends on axioms: [propext]
+info: FastLeanIO/Standards/Proofs.lean:131:0: 'FastLeanIO.Standards.sse_guard_no_injection' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [145/147] Built FeatureServer (927ms)
+✔ [146/147] Built FeatureServer:c.o (480ms)
+✔ [147/147] Built feature_server:exe (370ms)
+Build completed successfully (147 jobs).
