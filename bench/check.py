@@ -2,7 +2,7 @@
 """Fresh socket correctness and matched one-core end-to-end benchmarks.
 Only the Python standard library and wrk are needed. Never caches app responses.
 """
-import argparse, base64, hashlib, http.client, json, os, pathlib, random, re, secrets, socket, subprocess, time, urllib.parse, statistics
+import argparse, base64, hashlib, http.client, json, os, pathlib, random, re, secrets, socket, subprocess, time, urllib.parse, statistics, shutil
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def snapshot():
@@ -14,7 +14,7 @@ def snapshot():
             if any(x in {'.git','.lake','target','node_modules','results','__pycache__','data'} for x in rel.parts):continue
             if p.is_file() and (p.suffix in {'.lean','.c','.py','.rs','.mjs','.toml','.json','.lock'} or p.name=='lean-toolchain'):
                 files[str(p.relative_to(ROOT))]=sha(p)
-    for p in [ROOT/'.lake/build/bin/feature_server',ROOT/'bench/axum/target/release/fastleanio-axum-baseline',pathlib.Path('/usr/bin/node')]:files[str(p)]=sha(p)
+    for p in [ROOT/'.lake/build/bin/feature_server',ROOT/'bench/axum/target/release/fastleanio-axum-baseline',pathlib.Path(shutil.which('node') or 'node')]:files[str(p)]=sha(p)
     return files
 
 def request(port, method, path, body=b'',headers=None):
