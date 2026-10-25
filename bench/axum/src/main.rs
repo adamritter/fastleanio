@@ -34,6 +34,12 @@ async fn auth(req:Request,next:Next)->Response{
 }
 async fn log(req:Request,next:Next)->Response{let start=Instant::now();let method=req.method().clone();let target=req.uri().clone();let r=next.run(req).await;let _record=(method,target,r.status(),start.elapsed());LOGS.fetch_add(1,Ordering::Relaxed);r}
 async fn sse()->Sse<impl futures_util::Stream<Item=Result<Event,Infallible>>>{Sse::new(futures_util::stream::iter((0..4).map(|i|Ok(Event::default().id(i.to_string()).data(format!("event-{i}"))))))}
+async fn sse_later()->Sse<impl futures_util::Stream<Item=Result<Event,Infallible>>>{
+ Sse::new(futures_util::stream::unfold(0,|i|async move{
+  if i==4{return None;} if i==0{tokio::time::sleep(Duration::from_millis(2)).await;}
+  Some((Ok(Event::default().id(i.to_string()).data(format!("event-{i}"))),i+1))
+ }))
+}
 #[tokio::main(flavor="current_thread")]
 async fn main(){
  let args:Vec<_>=std::env::args().collect();let port=args.get(1).map(String::as_str).unwrap_or("18302");let root=args.get(2).cloned().unwrap_or("bench/data".into());
@@ -52,7 +58,7 @@ async fn main(){
   .route("/bearer",get(||async{"authenticated"}).route_layer(middleware::from_fn(auth)))
   .route("/log",get(||async{"logged"}).route_layer(middleware::from_fn(log)))
   .route("/log-count",get(||async{LOGS.load(Ordering::Relaxed).to_string()}))
-  .nest_service("/files",files).route("/sse",get(sse)).route("/later",get(||async{tokio::time::sleep(Duration::from_millis(2)).await;"later"}))
+  .nest_service("/files",files).route("/sse",get(sse)).route("/sse-later",get(sse_later)).route("/later",get(||async{tokio::time::sleep(Duration::from_millis(2)).await;"later"}))
   .route("/fail",get(||async{(StatusCode::INTERNAL_SERVER_ERROR,"Internal Server Error")}))
   .layer(DefaultBodyLimit::max(1048576)).layer(middleware::from_fn(headers));
  let listener=tokio::net::TcpListener::bind(format!("127.0.0.1:{port}")).await.unwrap();axum::serve(listener,app).await.unwrap();

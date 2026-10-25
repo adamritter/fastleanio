@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "seed": 646673294628402148,
+  "workers": [
+    1,
+    4
+  ],
+  "checked_cases": 136,
+  "details": [
+    {
+      "workers": 1,
+      "case": "wait-handler",
+      "cancel_seconds": 0.00026166706811636686,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "wait-stream",
+      "cancel_seconds": 0.0002534110099077225,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 1,
+      "case": "late",
+      "cancel_seconds": 0.00021353806369006634,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "backpressure",
+      "pulls_before": 16,
+      "pulls_after": 16
+    },
+    {
+      "workers": 1,
+      "case": "heartbeat",
+      "beats": 70
+    },
+    {
+      "workers": 4,
+      "case": "wait-handler",
+      "cancel_seconds": 0.00022627401631325483,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "wait-stream",
+      "cancel_seconds": 0.00022624200209975243,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 4,
+      "case": "late",
+      "cancel_seconds": 0.0002211539540439844,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "backpressure",
+      "pulls_before": 16,
+      "pulls_after": 16
+    },
+    {
+      "workers": 4,
+      "case": "heartbeat",
+      "beats": 70
+    }
+  ],
+  "binary_sha256": "9d9fdd0e6ce4e25edea5180748bc756e8b5a2f037d771f1beface329ed779c92"
+}

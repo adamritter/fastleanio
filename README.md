@@ -96,8 +96,11 @@ bounds at each byte access, plus fewer header-string allocations. It remains a
 bounded, buffered upload parser. The complete KMP/parser algorithm is regression
 tested rather than formally verified; its RFC boundary predicates remain proved.
 
-The pinned FastHTTP core audits 384 theorems plus four certificate factories,
+The pinned FastHTTP core audits 394 theorems plus four certificate factories,
 including five batch-payload conservation theorems and the single-line SSE wire
 form. The framework audit still checks 51 theorems and all nine standards snapshots.
-Actual asynchronous transport waits still use 10 ms polling. See [BENCHMARK.md](BENCHMARK.md)
-for measured results and the retained pre-optimization comparison.
+Suspended handlers and SSE now wake on task completion, without periodic polling.
+SSE selects completion, cancellation or the heartbeat deadline. Ten additional
+core theorems cover notification state transitions; C/runtime behavior remains
+covered by explicit assumptions and native sanitizer/network tests.
+See [BENCHMARK.md](BENCHMARK.md) for measured results and retained controls.

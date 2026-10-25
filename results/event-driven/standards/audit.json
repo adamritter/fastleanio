@@ -1,0 +1,250 @@
+{
+  "passed": true,
+  "normative_sources": 9,
+  "checked_theorems": 51,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "theorems": {
+    "FastLeanIO.HTTP.prepare_eq_constructor": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.prepareBounded_within": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.prepareBounded_exceeded": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withHeader_body": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withHeader_prepare": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withStatus_prepare": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withHeader_stream": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withStatus_stream": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withHeader_buffered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.withStatus_buffered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.plan_buffered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.plan_stream": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.plan_scoped": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.execute_buffered": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.buffered_factory_independent": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.ready_buffered_certified": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.App.middleware_preserves_sync": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.hexPair_encodeByte": [
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.decodeRev_encodeList": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.decodeBytes_encodeBytes": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.decodeTextBytes_encodeUTF8": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.hexValue_replacePlus": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.hexPair_replacePlus": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.accepted_agrees_with_standard": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.literal_plus": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.form_space": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.percent_once": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.lowercase_hex": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.FormCodec.malformed_percent": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.boundaryChar_ascii": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.boundaryChar_no_framing": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.validBoundary_size": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.validBoundary_alphabet": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.delimiterTail_exact": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.delimiter_lookalike_rejected": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.validBoundary_final_nonspace": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.bearerChar_ascii": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.validBearer_nonempty": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.validBearer_grammar": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.basicEncoding_shape": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.credentials_no_control": [
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.closedSelection_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.closedSelection_membership": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.suffixSelection_bounds": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.suffixSelection_membership": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.Standards.range_ignored_non_get": [
+      "propext"
+    ],
+    "FastLeanIO.Standards.range_ignored_empty": [
+      "propext"
+    ],
+    "FastLeanIO.Standards.weak_if_range_ignored": [
+      "propext"
+    ],
+    "FastLeanIO.Standards.sse_guard_no_injection": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FastLeanIO.HTTP.binary_extractor_exact": [],
+    "FastLeanIO.FormCodec.hexPair_all_bytes": []
+  }
+}

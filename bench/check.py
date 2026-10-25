@@ -41,6 +41,7 @@ def cases(rng,filedata):
       'file_64k':('GET','/files/asset.bin',b'',{},filedata,200),
       'range_1k':('GET','/files/asset.bin',b'',{'Range':'bytes=256-1279'},filedata[256:1280],206),
       'sse_4_events':('GET','/sse',b'',{},None,200),
+      'sse_delayed_2ms':('GET','/sse-later',b'',{},None,200),
       'async_2ms':('GET','/later',b'',{},b'later',200),
     }
 
@@ -157,10 +158,10 @@ end''']
     return {'requests_per_second':rps,'validated':good,'errors':bad,'raw':str(out.relative_to(ROOT))}
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--benchmark',action='store_true');p.add_argument('--seconds',type=int,default=5);p.add_argument('--warmup-seconds',type=int,default=2);p.add_argument('--repeats',type=int,default=3);p.add_argument('--server-cpu',type=int,default=16);p.add_argument('--client-cpus',default='24-31');p.add_argument('--wrk',default='/tmp/lean-uv-wrk/wrk');p.add_argument('--servers',default='fastleanio,express,axum');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--benchmark',action='store_true');p.add_argument('--seconds',type=int,default=5);p.add_argument('--warmup-seconds',type=int,default=2);p.add_argument('--repeats',type=int,default=3);p.add_argument('--server-cpu',type=int,default=16);p.add_argument('--client-cpus',default='24-31');p.add_argument('--wrk',default='/tmp/lean-uv-wrk/wrk');p.add_argument('--servers',default='fastleanio,express,axum');p.add_argument('--workloads',default='');a=p.parse_args()
     out=ROOT/a.output;out.mkdir(parents=True,exist_ok=True);data=out/'data';data.mkdir(exist_ok=True)
     seed=secrets.randbits(64);rng=random.Random(seed);filedata=rng.randbytes(65536);(data/'asset.bin').write_bytes(filedata);(out/'secret.bin').write_bytes(b'never serve this');(data/'.hidden').write_bytes(b'never serve this')
-    before=snapshot();result={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'versions':{cmd:subprocess.check_output(cmd.split(),text=True).strip() for cmd in ['node --version','cargo --version','rustc --version','lake env lean --version']},'seed':seed,'timestamp_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'machine':subprocess.check_output(['uname','-a'],text=True).strip(),'affinity':sorted(os.sched_getaffinity(0)),'server_cpu':a.server_cpu,'client_cpus':a.client_cpus,'connections':64,'client_threads':2,'warmup_seconds':a.warmup_seconds,'wrk_sha256':sha(pathlib.Path(a.wrk)) if a.benchmark else None,'seconds':a.seconds,'repeats':a.repeats,'source_and_binary_sha256':before,'correctness':{},'runs':[]}
+    before=snapshot();result={'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'versions':{cmd:subprocess.check_output(cmd.split(),text=True).strip() for cmd in ['node --version','cargo --version','rustc --version','lake env lean --version']},'seed':seed,'timestamp_utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'machine':subprocess.check_output(['uname','-a'],text=True).strip(),'affinity':sorted(os.sched_getaffinity(0)),'server_cpu':a.server_cpu,'client_cpus':a.client_cpus,'workloads':a.workloads.split(',') if a.workloads else list(cases(rng,filedata)), 'connections':64,'client_threads':2,'warmup_seconds':a.warmup_seconds,'wrk_sha256':sha(pathlib.Path(a.wrk)) if a.benchmark else None,'seconds':a.seconds,'repeats':a.repeats,'source_and_binary_sha256':before,'correctness':{},'runs':[]}
     (out/'metadata.json').write_text(json.dumps(result,indent=2))
     names=a.servers.split(',')
     for i,name in enumerate(names):
@@ -170,6 +171,7 @@ def main():
         # Interleave frameworks between repetitions to reduce order/thermal bias.
         for rep in range(a.repeats):
             workloads=cases(rng,filedata)
+            if a.workloads: workloads={name:workloads[name] for name in a.workloads.split(',')}
             for name in names[rep%len(names):]+names[:rep%len(names)]:
                 with Server(name,18300+names.index(name),a.server_cpu,data,out) as server:
                     for workload,case in workloads.items():
@@ -186,6 +188,6 @@ def main():
                         (out/'results.json').write_text(json.dumps(result,indent=2));print(f'{rep} {name} {workload}: {run["requests_per_second"]:,.0f}/s',flush=True)
     assert snapshot()==before,'Source/binaries changed during evaluation; rerun from a fixed checkpoint'
     result['source_unchanged']=True
-    result['medians']={name:{w:statistics.median(r['requests_per_second'] for r in result['runs'] if r['server']==name and r['workload']==w) for w in cases(rng,filedata)} for name in names} if a.benchmark else {}
+    result['medians']={name:{w:statistics.median(r['requests_per_second'] for r in result['runs'] if r['server']==name and r['workload']==w) for w in result['workloads']} for name in names} if a.benchmark else {}
     (out/'results.json').write_text(json.dumps(result,indent=2))
 if __name__=='__main__':main()

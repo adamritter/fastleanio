@@ -22,11 +22,12 @@ private def multipartResult (form : Multipart) : Except Std.Http.Status String :
       checksum := part.body.foldl (fun n byte => n + byte.toNat) 0
   return s!"{label}:{size}:{checksum}"
 
-private def events : ContextAsync FastHTTP.SSE.Source := do
+private def events (delayed : Bool := false) : ContextAsync FastHTTP.SSE.Source := do
   let index ← IO.mkRef 0
   return { next := do
     let i ← index.get
     if i == 4 then return none
+    if delayed && i == 0 then Std.Async.sleep 2
     index.set (i + 1)
     return some { data := s!"event-{i}", id := some (toString i) } }
 
@@ -44,7 +45,8 @@ private def router (files : StaticFiles) (logged : IO.Ref Nat) : FastLeanIO.Rout
     |>.addRoute ((GET "/log" => "logged").addMiddleware (requestLogger fun _ => logged.modify (· + 1)))
     |>.addRoute (GET "/log-count" => do return toString (← logged.get))
     |>.addRoute (GET "/files/{*path}" (path : Path String) (req : HTTP.Request) => do return ← files.respond path.value req)
-    |>.addRoute (GET "/sse" => sse events 0)
+    |>.addRoute (GET "/sse" => sse (events false) 0)
+    |>.addRoute (GET "/sse-later" => sse (events true) 0)
     |>.addRoute (GET "/later" => do Std.Async.sleep 2; return "later")
     |>.addRoute (GET "/fail" => do throw (IO.userError "private error"); return "unreachable")
     |>.addRouter "/api" (empty.addRoute (GET "/hello/{name}" (name : Path String) => do return s!"hello {name.value}"))
