@@ -60,7 +60,7 @@ def headerParameters (s : String) : Except String (Array String) := do
   let mut field := ""
   let mut quoted := false
   let mut escaped := false
-  for c in s.toList do
+  for c in s do
     if escaped then
       field := field.push c
       escaped := false
@@ -80,12 +80,13 @@ def headerParameters (s : String) : Except String (Array String) := do
 
 private def parameter (fields : Array String) (key : String) : Except String (Option String) := do
   let mut found := none
-  for field in fields.toList.drop 1 do
-    let parts := field.splitOn "="
-    if parts.head!.trimAscii.toString.toLower == key then
+  for field in fields[1:] do
+    let pair := field.splitOnce '='
+    let fieldKey := pair.map (fun p => p.1.toString) |>.getD field
+    if fieldKey.trimAscii.toString.toLower == key then
       if found.isSome then throw "duplicate header parameter"
-      unless parts.length ≥ 2 do throw "missing parameter value"
-      let raw := (String.intercalate "=" parts.tail!).trimAscii.toString
+      let (_, value) ← pair.toExcept "missing parameter value"
+      let raw := value.trimAscii.toString
       if raw.startsWith "\"" then
         unless raw.length ≥ 2 && raw.endsWith "\"" do throw "invalid quoted parameter"
         let mut decoded := ""
@@ -110,10 +111,9 @@ private def parsePartHeaders (bytes : ByteArray) : Except String (String × Opti
   let mut disposition := none
   let mut contentType := none
   for line in s.splitOn "\r\n" do
-    let pieces := line.splitOn ":"
-    unless pieces.length ≥ 2 do throw "invalid multipart header"
-    let key := pieces.head!.toLower
-    let value := (String.intercalate ":" pieces.tail!).trimAscii.toString
+    let (key, value) ← (line.splitOnce ':').toExcept "invalid multipart header"
+    let key := key.toString.toLower
+    let value := value.trimAscii.toString
     if key == "content-disposition" then
       if disposition.isSome then throw "duplicate Content-Disposition"
       disposition := some value
@@ -149,14 +149,14 @@ def parseMultipart (contentType : String) (body : ByteArray)
     unless suffix == "\r\n".toUTF8 do throw "invalid boundary line"
     unless parts.size < limits.maxParts do throw "too many multipart parts"
     cursor := cursor + 2
-    let stop ← (headerEnd.search body cursor).toExcept "incomplete part headers"
+    let stop ← (headerEnd.searchBytes body cursor).toExcept "incomplete part headers"
     unless stop - cursor ≤ limits.maxHeaderBytes do throw "part headers too large"
     let (name, filename, contentType) ← parsePartHeaders (body.extract cursor stop)
     let start := stop + 4
     let mut scan := start
     let mut ending := none
     while scan < body.size do
-      let position ← (delimiter.search body scan).toExcept "missing closing boundary"
+      let position ← (delimiter.searchBytes body scan).toExcept "missing closing boundary"
       let after := position + delimiter.needle.size
       if Standards.delimiterTail (body.extract after (after + 4)).data.toList then
         ending := some position

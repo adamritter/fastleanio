@@ -46,7 +46,7 @@ The only Lake dependency is the pinned `adamritter/lean-fasthttp` revision in `l
 | Files | Streaming regular files, MIME types, weak metadata ETag, If-None-Match, single byte ranges, suffix/open ranges, 416, HEAD, cache headers |
 | Authentication | Basic/Bearer middleware with application-provided `Action Bool` validators; redacted credentials; 401 challenges |
 | Logging | Structured method/target/status/handler-duration record and application-provided sink |
-| Streaming / SSE | Pull-based response streaming, backpressure, cancellation, exactly-once cleanup, SSE events/IDs/retry/heartbeat |
+| Streaming / SSE | Pull-based response streaming, backpressure, cancellation, exactly-once cleanup, SSE events/IDs/retry/heartbeat, bounded ready-event batching |
 | Async | Immediate, suspended and synchronous handlers; exception recovery; finally cleanup; cancellation scopes shared within one request and isolated across requests |
 
 ### Deliberate limits
@@ -65,7 +65,7 @@ Replace `import LeanIO` / `LeanIOFastHTTP.*` with `import FastLeanIO`. Use `Fast
 
 `lake build` checks the retained 18 integration theorems and the new standards-derived codec/grammar/range theorems and builds the feature and lifecycle regressions. The pinned FastHTTP revision retains its existing protocol proof audit. The integration proofs cover certified response preparation, bounded buffered responses, Action completion decisions and sync-preserving middleware. The additional standards proofs and their exact limits are mapped in [standards/README.md](standards/README.md). They do **not** prove the whole multipart parser, filesystem behavior, authentication policies or arbitrary application code correct.
 
-`feature_checks` covers strict form decoding, binary multipart delimiter lookalikes, quoted filenames, all multipart limits, exact saved upload bytes, and 162,792 closed/suffix range cases. `action_checks` exercises 32 lifecycle iterations. `streaming_check.py` runs fresh real-socket tests with one and four workers, including disconnects, late results, backpressure, heartbeat, timeout and shutdown. The cross-framework suite uses fresh random inputs and checks successful and failing requests.
+`feature_checks` covers 8,000 fresh search comparisons with an independent exhaustive matcher, ready SSE opening, strict form decoding, binary multipart delimiter lookalikes, quoted filenames, all multipart limits, exact saved upload bytes, and 162,792 closed/suffix range cases. `action_checks` exercises 32 lifecycle iterations. `streaming_check.py` runs fresh real-socket tests with one and four workers, including disconnects, late results, backpressure, heartbeat, timeout and shutdown. The cross-framework suite uses fresh random inputs and checks successful and failing requests.
 
 ## Express and Axum comparison
 
@@ -81,3 +81,23 @@ python3 bench/check.py --output results/my-benchmark --benchmark --seconds 5 --r
 Defaults reserve server CPU 16 and client CPUs 24–31 on Lambda; override `--server-cpu` and `--client-cpus` for another host. Supply `--wrk` if needed. Every timed response is checked for status, middleware header and exact body; finite SSE responses are first checked semantically, then their full wire body is checked during timing. Source and binary hashes are frozen before and after each run. SSE numbers mean completed four-event responses per second, not long-lived connection capacity.
 
 Original MIT attribution and source revisions are preserved in [ORIGIN.md](ORIGIN.md) and [LICENSE](LICENSE).
+
+## SSE and multipart optimization
+
+SSE opening preserves immediately completed IO. FastHTTP coalesces ready events
+into batches of at most 32 pulls, stopping after reaching 16 KiB (one indivisible
+event may exceed that byte limit). A pending next event does not delay buffered
+events. This changes HTTP chunk boundaries, not SSE event bytes. The producer can
+be read ahead by one bounded batch; cancellation and close ownership are retained.
+Ordinary one-line data avoids the multiline normalization allocations.
+
+Multipart uses byte-specialized KMP with machine-sized cursors and kernel-checked
+bounds at each byte access, plus fewer header-string allocations. It remains a
+bounded, buffered upload parser. The complete KMP/parser algorithm is regression
+tested rather than formally verified; its RFC boundary predicates remain proved.
+
+The pinned FastHTTP core audits 384 theorems plus four certificate factories,
+including five batch-payload conservation theorems and the single-line SSE wire
+form. The framework audit still checks 51 theorems and all nine standards snapshots.
+Actual asynchronous transport waits still use 10 ms polling. See [BENCHMARK.md](BENCHMARK.md)
+for measured results and the retained pre-optimization comparison.

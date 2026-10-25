@@ -4,3 +4,5 @@ bench/express/node_modules/
 __pycache__/
 results/development-*/
 results/load-smoke/
+results/optimization-pilot/
+results/optimization-streaming-pilot/

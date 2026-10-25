@@ -103,6 +103,29 @@ namespace Search
         else go i (self.LPS[j - 1]!)
       go start 0
 
+  /-- Byte-specialized KMP. Machine-sized cursors avoid generic indexed-access
+  dictionaries and boxed Nat arithmetic in the payload scan. -/
+  public partial def searchBytes (self : Search ByteArray) (haystack : ByteArray)
+      (start : Nat := 0) : Option Nat := do
+    if self.needle.isEmpty then return start
+    if start + self.needle.size > haystack.size then none
+    else
+      let rec go (i j : USize) : Option Nat :=
+        if hi : i < haystack.usize then
+          if hj : j < self.needle.usize then
+            have bound (a : ByteArray) (k : USize) (h : k < a.usize) : k.toNat < a.size := by
+              have h' := USize.lt_iff_toNat_lt.mp h
+              simp only [ByteArray.usize, USize.toNat_ofNat'] at h'
+              exact Nat.lt_of_lt_of_le h' (Nat.mod_le _ _)
+            if haystack.uget i (bound _ _ hi) == self.needle.uget j (bound _ _ hj) then
+              if j + 1 == self.needle.usize then some (i.toNat - j.toNat)
+              else go (i + 1) (j + 1)
+            else if j == 0 then go (i + 1) 0
+            else go i (self.LPS[j.toNat - 1]!).toUSize
+          else none
+        else none
+      go start.toUSize 0
+
   /-- Compute the longest prefix-suffix overlap between the end of `haystack` and `needle`.
       Returns the number of trailing bytes that form a prefix of `needle`.
       Runs KMP on only the last `needle.size - 1` bytes. -/

@@ -53,8 +53,12 @@ def stream (openSource : ContextAsync FastHTTP.AsyncStream.Source)
     (contentType : String := "application/octet-stream") : Response :=
   .fresh { contentType, stream := some openSource }
 
+/-- Apply the context explicitly so IO uses Async's immediate lift. Std's
+ContextAsync IO lift turns ready IO into a task, unnecessarily suspending opening. -/
 def sse (openSource : ContextAsync FastHTTP.SSE.Source) (heartbeatMs : Nat := 15000) : Response :=
-  (stream (do return ← (← openSource).bytes heartbeatMs) "text/event-stream")
+  (stream (fun context => do
+    let source ← openSource context
+    source.bytes heartbeatMs) "text/event-stream")
     |>.withHeader "cache-control" "no-cache"
 
 structure Request where

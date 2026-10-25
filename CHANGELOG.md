@@ -13,3 +13,17 @@ The first UTF-8 form roundtrip test exposed loss of a literal plus sign through 
 Standards review exposed a too-permissive multipart boundary alphabet, loss of quoted trailing spaces, missing Basic credential control-character checks, and Range processing on HEAD. These were corrected and covered by the corresponding rules/proofs and regressions. A subsequent range-parser change briefly treated an open-ended range beyond EOF as malformed instead of unsatisfiable; fresh cross-framework tests caught it and the parser now distinguishes an omitted last position from an explicit reversed range.
 
 The first Express fixture returned 500 on malformed multipart input; the fixture now maps parser failures to 400 and size limits to 413. The Axum file wrapper needed explicit weak-ETag If-Range handling. Both baseline applications suppress Range on non-GET requests for the matched contract. These are application adapters, not claims that the underlying frameworks have been formally verified.
+
+## SSE and multipart optimization
+
+- Fixed SSE opening's unintended task creation through Std.ContextAsync's IO lift.
+- Added bounded ready-only event batching in FastHTTP; pending events never hold
+  back ready bytes. Preserved errors, invalid empty chunks, EOF and cancellation.
+- Added a one-line SSE encoder path, its wire-form theorem and 9,330 encoder
+  comparisons. Five additional core theorems establish batch-byte conservation.
+- Specialized multipart KMP for byte arrays and machine-sized cursors with proved
+  access bounds; reduced parameter/header splitting allocations. Added 8,000 fresh
+  comparisons with an independent exhaustive matcher and repeated-prefix cases.
+- Retained the original full benchmark in `results/express-axum-final`. The
+  optimized results use a new frozen checkpoint and fresh inputs. Genuine async
+  waits still cross the existing polling transport; that limitation remains.
