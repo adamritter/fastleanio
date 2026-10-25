@@ -1,0 +1,11 @@
+{ accepted := 148,
+  readCallbacks := 222,
+  receivedBytes := 441049,
+  sendCalls := 578,
+  sentBytes := 10921088,
+  queuedWrites := 1,
+  errors := 0,
+  peerDisconnects := 5,
+  elapsedNs := 6664694888 }
+FINAL shutdown-stream {"cancelled":1,"closed":1,"entered":1,"opened":1,"pulls":1}
+FINAL shutdown-handler {"cancelled":1,"closed":0,"entered":1,"opened":0,"pulls":0}

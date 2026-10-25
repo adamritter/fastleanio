@@ -1,0 +1,24 @@
+name = "fastleanio"
+version = "0.1.0"
+defaultTargets = ["FastLeanIO", "feature_server", "action_checks", "feature_checks", "streaming_checks"]
+[[require]]
+name = "fast_http"
+git = "https://github.com/adamritter/lean-fasthttp"
+rev = "a716318ad18f5de9c3afb32e8c1593e86da5d884"
+[[lean_lib]]
+name = "FastLeanIO"
+globs = ["FastLeanIO", "FastLeanIO.+"]
+[[lean_exe]]
+name = "feature_server"
+root = "FeatureServer"
+[[lean_exe]]
+name = "action_checks"
+root = "ActionChecks"
+
+[[lean_exe]]
+name = "streaming_checks"
+root = "StreamingChecks"
+
+[[lean_exe]]
+name = "feature_checks"
+root = "FeatureChecks"

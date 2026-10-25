@@ -1,0 +1,88 @@
+⚠ [30/141] Replayed FastHTTP.TargetProofs
+warning: FastHTTP/TargetProofs.lean:170:14: This simp argument is unused:
+  huser
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, ha, hp, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:21: This simp argument is unused:
+  ha
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, hp, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:25: This simp argument is unused:
+  hp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, ha, or_assoc, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:170:29: This simp argument is unused:
+  or_assoc
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hu, huser, ha, hp, and_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:218:68: This simp argument is unused:
+  Bool.or_self
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [halpha, Bool.not_true, hscheme, bne_self_eq_false, Bool.false_eq_true, ↓reduceIte, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:219:28: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [halpha, Bool.not_true, hscheme, bne_self_eq_false, Bool.or_self, Bool.false_eq_true, true_and]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:235:19: This simp argument is unused:
+  Bool.or_eq_true
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [decide_eq_true_eq, bne_iff_ne, or_assoc, hh, ↓reduceIte, false_and, or_false]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:238:21: This simp argument is unused:
+  throw
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hscheme]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: FastHTTP/TargetProofs.lean:239:18: This simp argument is unused:
+  throw
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [halpha]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+ℹ [64/141] Replayed FastLeanIO.HTTPProofs
+info: FastLeanIO/HTTPProofs.lean:62:0: 'FastLeanIO.HTTP.prepare_eq_constructor' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:63:0: 'FastLeanIO.HTTP.prepareBounded_within' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:64:0: 'FastLeanIO.HTTP.prepareBounded_exceeded' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:65:0: 'FastLeanIO.HTTP.withHeader_body' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:66:0: 'FastLeanIO.HTTP.withHeader_prepare' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:67:0: 'FastLeanIO.HTTP.withStatus_prepare' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:68:0: 'FastLeanIO.HTTP.binary_extractor_exact' does not depend on any axioms
+info: FastLeanIO/HTTPProofs.lean:69:0: 'FastLeanIO.HTTP.withHeader_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:70:0: 'FastLeanIO.HTTP.withStatus_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:71:0: 'FastLeanIO.HTTP.withHeader_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/HTTPProofs.lean:72:0: 'FastLeanIO.HTTP.withStatus_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+ℹ [65/141] Replayed FastLeanIO.AppProofs
+info: FastLeanIO/AppProofs.lean:39:0: 'FastLeanIO.App.plan_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:40:0: 'FastLeanIO.App.plan_stream' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:41:0: 'FastLeanIO.App.plan_scoped' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:42:0: 'FastLeanIO.App.execute_buffered' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:43:0: 'FastLeanIO.App.buffered_factory_independent' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:44:0: 'FastLeanIO.App.ready_buffered_certified' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: FastLeanIO/AppProofs.lean:45:0: 'FastLeanIO.App.middleware_preserves_sync' depends on axioms: [propext, Classical.choice, Quot.sound]
+✔ [139/141] Built FeatureChecks (1.1s)
+✔ [140/141] Built FeatureChecks:c.o (278ms)
+✔ [141/141] Built feature_checks:exe (364ms)
+Build completed successfully (141 jobs).

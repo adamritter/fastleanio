@@ -1,0 +1,30 @@
+name: Build and feature regressions
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y libuv1-dev
+      - uses: leanprover/lean-action@v1
+        with:
+          build: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --prefix bench/express
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release --locked --manifest-path bench/axum/Cargo.toml
+      - run: .lake/build/bin/feature_checks
+      - run: .lake/build/bin/action_checks 20261025
+      - name: Fresh socket and lifecycle checks
+        shell: bash
+        run: |
+          CI_FIRST_CPU=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
+          python3 bench/check.py --output results/ci-features --server-cpu "$CI_FIRST_CPU"
+          python3 streaming_check.py --output results/ci-streaming --first-cpu "$CI_FIRST_CPU"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: validation
+          path: results/ci-*
