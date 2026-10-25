@@ -27,6 +27,7 @@ lake build
 mkdir -p bench/data
 lake exe feature_server 8080 bench/data
 lake exe feature_checks
+python3 scripts/verify_standards.py
 lake exe action_checks 12345
 ```
 
@@ -62,7 +63,7 @@ Replace `import LeanIO` / `LeanIOFastHTTP.*` with `import FastLeanIO`. Use `Fast
 
 ## Validation and proof scope
 
-`lake build` checks the retained 18 integration theorems and builds the feature and lifecycle regressions. The pinned FastHTTP revision retains its existing protocol proof audit. The integration proofs cover certified response preparation, bounded buffered responses, Action completion decisions and sync-preserving middleware. They do **not** prove the new multipart parser, filesystem behavior, authentication policies or arbitrary application code correct.
+`lake build` checks the retained 18 integration theorems and the new standards-derived codec/grammar/range theorems and builds the feature and lifecycle regressions. The pinned FastHTTP revision retains its existing protocol proof audit. The integration proofs cover certified response preparation, bounded buffered responses, Action completion decisions and sync-preserving middleware. The additional standards proofs and their exact limits are mapped in [standards/README.md](standards/README.md). They do **not** prove the whole multipart parser, filesystem behavior, authentication policies or arbitrary application code correct.
 
 `feature_checks` covers strict form decoding, binary multipart delimiter lookalikes, quoted filenames, all multipart limits, exact saved upload bytes, and 162,792 closed/suffix range cases. `action_checks` exercises 32 lifecycle iterations. `streaming_check.py` runs fresh real-socket tests with one and four workers, including disconnects, late results, backpressure, heartbeat, timeout and shutdown. The cross-framework suite uses fresh random inputs and checks successful and failing requests.
 

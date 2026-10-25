@@ -1,4 +1,6 @@
 import FastLeanIO.App
+import FastLeanIO.FormCodec
+import FastLeanIO.Standards.Rules
 
 def Option.toExcept (value : Option α) (error : ε) : Except ε α :=
   match value with | some a => .ok a | none => .error error
@@ -7,9 +9,7 @@ namespace FastLeanIO
 open Std.Http
 
 /-- Decode URL form components strictly, including `+` as space. -/
-def decodeFormComponent (s : String) : Except String String := do
-  let encoded ← (URI.EncodedQueryParam.fromString? (s.replace "+" "%20")).toExcept "invalid percent encoding"
-  encoded.decode.toExcept "invalid UTF-8"
+def decodeFormComponent := FormCodec.decodeComponent
 
 def decodeForm (body : ByteArray) (maxFields : Nat := 128) : Except String (Std.HashMap String String) := do
   let s ← (String.fromUTF8? body).toExcept "invalid UTF-8"
@@ -18,6 +18,7 @@ def decodeForm (body : ByteArray) (maxFields : Nat := 128) : Except String (Std.
   unless fields.length ≤ maxFields do throw "too many form fields"
   let mut query : Std.HashMap String String := {}
   for field in fields do
+    if field.isEmpty then continue
     let pair := field.splitOn "="
     let key ← decodeFormComponent pair.head!
     let value ← decodeFormComponent (String.intercalate "=" pair.tail!)
@@ -64,8 +65,10 @@ def headerParameters (s : String) : Except String (Array String) := do
       field := field.push c
       escaped := false
     else if c == '\\' && quoted then
+      field := field.push c
       escaped := true
     else if c == '"' then
+      field := field.push c
       quoted := !quoted
     else if c == ';' && !quoted then
       fields := fields.push field.trimAscii.toString
@@ -82,7 +85,24 @@ private def parameter (fields : Array String) (key : String) : Except String (Op
     if parts.head!.trimAscii.toString.toLower == key then
       if found.isSome then throw "duplicate header parameter"
       unless parts.length ≥ 2 do throw "missing parameter value"
-      found := some (String.intercalate "=" parts.tail!).trimAscii.toString
+      let raw := (String.intercalate "=" parts.tail!).trimAscii.toString
+      if raw.startsWith "\"" then
+        unless raw.length ≥ 2 && raw.endsWith "\"" do throw "invalid quoted parameter"
+        let mut decoded := ""
+        let mut escaped := false
+        for c in (raw.toList.drop 1).dropLast do
+          unless c == '\t' || (c.toNat ≥ 32 && c.toNat != 127) do throw "control in parameter"
+          if escaped then
+            decoded := decoded.push c
+            escaped := false
+          else if c == '\\' then escaped := true
+          else if c == '"' then throw "unescaped quote in parameter"
+          else decoded := decoded.push c
+        if escaped then throw "incomplete quoted pair"
+        found := some decoded
+      else
+        unless !raw.isEmpty && raw.toUTF8.data.toList.all FastHTTP.token do throw "invalid token parameter"
+        found := some raw
   return found
 
 private def parsePartHeaders (bytes : ByteArray) : Except String (String × Option String × Option String) := do
@@ -113,9 +133,7 @@ def parseMultipart (contentType : String) (body : ByteArray)
   let params ← headerParameters contentType
   unless (params[0]?.getD "").toLower == "multipart/form-data" do throw "expected multipart/form-data"
   let boundary ← (← parameter params "boundary").toExcept "missing boundary"
-  unless boundary.utf8ByteSize > 0 && boundary.utf8ByteSize ≤ 70 &&
-      boundary.toList.all (fun c => c.toNat ≥ 32 && c.toNat < 127) && !boundary.endsWith " " do
-    throw "invalid boundary"
+  unless Standards.validBoundary boundary.toUTF8.data.toList do throw "invalid boundary"
   let initial := ("--" ++ boundary).toUTF8
   unless body.extract 0 initial.size == initial do throw "missing initial boundary"
   let delimiter := Search.new ("\r\n--" ++ boundary).toUTF8
@@ -140,9 +158,7 @@ def parseMultipart (contentType : String) (body : ByteArray)
     while scan < body.size do
       let position ← (delimiter.search body scan).toExcept "missing closing boundary"
       let after := position + delimiter.needle.size
-      let tail := body.extract after (after + 2)
-      let finalLine := tail == "--".toUTF8 && (after + 2 == body.size || body.extract (after + 2) (after + 4) == "\r\n".toUTF8)
-      if tail == "\r\n".toUTF8 || finalLine then
+      if Standards.delimiterTail (body.extract after (after + 4)).data.toList then
         ending := some position
         break
       scan := position + 1

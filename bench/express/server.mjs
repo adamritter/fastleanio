@@ -31,7 +31,7 @@ app.get('/basic',auth('Basic'),(req,res)=>res.type('text').send('authenticated')
 let logs=0;
 app.get('/log',(req,res,next)=>{const start=process.hrtime.bigint();res.on('finish',()=>{const record={method:req.method,target:req.originalUrl,status:res.statusCode,elapsedNanos:process.hrtime.bigint()-start};logs++;});next()},(req,res)=>res.type('text').send('logged'));
 app.get('/log-count',(req,res)=>res.type('text').send(String(logs)));
-app.use('/files',express.static(root,{etag:true,dotfiles:'deny',fallthrough:false,cacheControl:true,maxAge:0}));
+app.use('/files',(req,res,next)=>{if(req.method!=='GET')delete req.headers.range;next()},express.static(root,{etag:true,dotfiles:'deny',fallthrough:false,cacheControl:true,maxAge:0}));
 app.get('/sse',(req,res)=>{res.type('text/event-stream').set('cache-control','no-cache');for(let i=0;i<4;i++)res.write(`id: ${i}\ndata: event-${i}\n\n`);res.end()});
 app.get('/later',async(req,res)=>{await new Promise(r=>setTimeout(r,2));res.type('text').send('later')});
 app.get('/fail',()=>{throw Error('private error')});

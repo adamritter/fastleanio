@@ -1,5 +1,6 @@
 import FastLeanIO.App
 import FastLeanIO.Utils
+import FastLeanIO.Standards.Rules
 
 namespace FastLeanIO
 open App HTTP Std.Async
@@ -28,31 +29,29 @@ def requestLogger (sink : RequestLog → IO Unit) : App.Middleware :=
 
 private def credentials (req : HTTP.Request) (scheme : String) : Option String := do
   let auth ← req.http.header? "authorization"
-  let parts := auth.splitOn " "
+  let parts := (auth.splitOn " ").filter (!·.isEmpty)
   unless parts.length == 2 && parts.head!.toLower == scheme do none
   let token := parts[1]!
   unless !token.isEmpty do none
   return token
 
 private def unauthorized (scheme : String) : HTTP.Response :=
-  ((HTTP.text "Unauthorized").withStatus .unauthorized).withHeader "www-authenticate" (scheme ++ " realm=\"Restricted Area\"")
+  ((HTTP.text "Unauthorized").withStatus .unauthorized).withHeader "www-authenticate" (scheme ++ " realm=\"Restricted Area\"" ++ if scheme == "Basic" then ", charset=\"UTF-8\"" else "")
 
 /-- The validator owns credential storage and policy. No credentials enter logs. -/
 def bearerAuth (validate : Redacted → FastHTTP.Action Bool) : App.Middleware :=
   App.around fun next req => do
     let some token := credentials req "bearer" | return unauthorized "Bearer"
+    unless Standards.validBearer token.toUTF8.data.toList do return unauthorized "Bearer"
     unless ← validate ⟨token⟩ do return unauthorized "Bearer"
     next req
 
 def basicAuth (validate : String → Redacted → FastHTTP.Action Bool) : App.Middleware :=
   App.around fun next req => do
     let some token := credentials req "basic" | return unauthorized "Basic"
-    -- Reject malformed padding rather than accepting arbitrary '=' placement.
-    let raw := token.dropEndWhile (· == '=') |>.toString
-    unless token.length % 4 == 0 && token.length - raw.length ≤ 2 &&
-        raw.toList.all (fun c => c.isAlphanum && c.toNat < 128 || c == '+' || c == '/') do
-      return unauthorized "Basic"
+    unless Standards.validBasicEncoding token.toUTF8.data.toList do return unauthorized "Basic"
     let some decoded := Utils.base64DecodeString token | return unauthorized "Basic"
+    unless Standards.validCredential decoded.toUTF8.data.toList do return unauthorized "Basic"
     let some (user, password) := decoded.splitOnce ':' | return unauthorized "Basic"
     unless ← validate user.toString ⟨password.toString⟩ do return unauthorized "Basic"
     next req

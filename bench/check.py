@@ -108,6 +108,20 @@ def correctness(name,port,rng,filedata):
         code,_,_=request(port,method,path,body,headers);assert 400<=code<500,(name,path,code);total+=1
     assert int(request(port,'GET','/log-count')[2])>=12
     if name=='fastleanio':
+        for headers in [{'Range':'bytes=0-2'}, {'Range':'bytes=-2'}]:
+            code,hh,body=request(port,'HEAD','/files/asset.bin',headers=headers)
+            assert code==200 and body==b'' and 'content-range' not in hh
+            total+=1
+        for auth in ['bAsIc    '+base64.b64encode(b'bench:secret').decode(), 'Basic '+base64.b64encode(b'bench:secret').decode()]:
+            assert request(port,'GET','/basic',headers={'Authorization':auth})[0]==200
+            total+=1
+        for auth in ['Bearer bad@token','Bearer =','Basic '+base64.b64encode(b'bench:sec\x00ret').decode()]:
+            assert request(port,'GET','/basic' if auth.startswith('Basic') else '/bearer',headers={'Authorization':auth})[0]==401
+            total+=1
+        for boundary in ['"bad "','"bad@boundary"']:
+            code,_,_=request(port,'POST','/multipart',multipart('x',b'y','bad'),{'Content-Type':'multipart/form-data; boundary='+boundary})
+            assert code==400
+            total+=1
         # Strict parser policy is intentionally stronger than the baseline libraries.
         for body in [b'name=%FF&count=1',b'name=%GG&count=1',b'name=a&name=b&count=1',b'name=x&count=-1']:
             code,_,_=request(port,'POST','/form',body,{'Content-Type':'application/x-www-form-urlencoded'});assert code in (400,422),(body,code);total+=1

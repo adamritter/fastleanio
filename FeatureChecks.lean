@@ -32,7 +32,7 @@ def main : IO Unit := do
   require (parseMultipart "multipart/form-data; boundary=abc" body { maxBytes := body.size - 1 } |> fun result => !result.isOk) "multipart byte limit"
   require (parseMultipart "multipart/form-data; boundary=abc" body { maxParts := 0 } |> fun result => !result.isOk) "multipart part limit"
   require (parseMultipart "multipart/form-data; boundary=abc" body { maxHeaderBytes := 4 } |> fun result => !result.isOk) "multipart header limit"
-  for typ in ["multipart/form-data", "multipart/form-data; boundary=", "multipart/form-data; boundary=\"abc", "multipart/form-data; boundary=abc; boundary=abc"] do
+  for typ in ["multipart/form-data; boundary=\"abc \"", "multipart/form-data; boundary=\"a@b\"", "multipart/form-data", "multipart/form-data; boundary=", "multipart/form-data; boundary=\"abc", "multipart/form-data; boundary=abc; boundary=abc"] do
     require (parseMultipart typ body |> fun result => !result.isOk) "invalid boundary accepted"
   for size in [:51] do
     for start in [:56] do
@@ -41,7 +41,7 @@ def main : IO Unit := do
         -- Independent reference: enumerate the bytes selected by the interval.
         let selected := (List.range size).filter fun i => start ≤ i && i ≤ ending
         let expected := selected.head?.map fun first => (first, selected.length)
-        require (parsed == some expected) "closed range differs from enumerated bytes"
+        require (parsed == (if ending < start then none else some expected)) "closed range differs from enumerated bytes"
       let parsed := (byteRange s!"bytes=-{start}" size).map Except.toOption
       let selected := ((List.range size).reverse.take start).reverse
       let expected := selected.head?.map fun first => (first, selected.length)

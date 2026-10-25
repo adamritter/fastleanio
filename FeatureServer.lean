@@ -10,12 +10,13 @@ private structure SearchQuery where
   q : String
 deriving FromQuery
 
-private def multipartResult (form : Multipart) : String := Id.run do
+private def multipartResult (form : Multipart) : Except Std.Http.Status String := do
   let mut label := ""
   let mut size := 0
   let mut checksum := 0
   for part in form.parts do
-    if part.name == "label" then label := String.fromUTF8! part.body
+    if part.name == "label" then
+      label ← (String.fromUTF8? part.body).toExcept .badRequest
     if part.name == "file" then
       size := part.body.size
       checksum := part.body.foldl (fun n byte => n + byte.toNat) 0

@@ -43,7 +43,7 @@ async fn main(){
   let tag=if safe{tokio::fs::metadata(std::path::Path::new(&root).join(relative)).await.ok().and_then(|m|m.modified().ok().and_then(|t|t.duration_since(UNIX_EPOCH).ok()).map(|t|format!("W/\"{}-{}-{}\"",m.len(),t.as_secs(),t.subsec_nanos())))}else{None};
   if let Some(ref tag)=tag{if req.headers().get(header::IF_NONE_MATCH).and_then(|v|v.to_str().ok())==Some(tag.as_str()){return Ok::<_,Infallible>((StatusCode::NOT_MODIFIED,[(header::ETAG,tag.clone())]).into_response());}}
   // Our ETag is weak, so no If-Range validator can authorize a partial response.
-  if req.headers().contains_key(header::IF_RANGE){req.headers_mut().remove(header::RANGE);}
+  if req.method()!=axum::http::Method::GET || req.headers().contains_key(header::IF_RANGE){req.headers_mut().remove(header::RANGE);}
   let mut r=ServeDir::new(root).oneshot(req).await.unwrap().into_response();if let Some(tag)=tag{r.headers_mut().insert(header::ETAG,HeaderValue::from_str(&tag).unwrap());}Ok(r)
  }});
  let app=Router::new().route("/plain",get(plain)).route("/sync",get(plain)).route("/hello/{name}",get(hello)).route("/api/hello/{name}",get(hello)).route("/query",get(query))

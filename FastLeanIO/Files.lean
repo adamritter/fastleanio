@@ -9,18 +9,17 @@ private def disk (action : IO α) : Async α := do
 
 /-- Single byte range. Multiple/malformed ranges are ignored; unsatisfiable ranges give 416. -/
 def byteRange (value : String) (size : Nat) : Option (Except Unit (Nat × Nat)) := do
-  let rest ← value.dropPrefix? "bytes="
-  let parts := rest.toString.splitOn "-"
+  let unit := value.splitOn "="
+  unless unit.length == 2 && unit[0]!.trimAscii.toString.toLower == "bytes" do none
+  let parts := unit[1]!.trimAscii.toString.splitOn "-"
   unless parts.length == 2 do none
   if parts[0]! == "" then
     let suffix ← parts[1]!.toNat?
-    if suffix == 0 || size == 0 then return .error ()
-    let count := min suffix size
-    return .ok (size - count, count)
+    return Standards.suffixSelection size suffix
   let start ← parts[0]!.toNat?
   let ending ← if parts[1]! == "" then some (size - 1) else parts[1]!.toNat?
-  if start ≥ size || ending < start then return .error ()
-  return .ok (start, min ending (size - 1) - start + 1)
+  if !parts[1]!.isEmpty && ending < start then none
+  return Standards.closedSelection size start ending
 
 private def weakTag (tag : String) : String :=
   (tag.dropPrefix? "W/").map (·.toString) |>.getD tag
@@ -98,8 +97,9 @@ def StaticFiles.respond (files : StaticFiles) (relative : String) (req : HTTP.Re
   let headers (r : HTTP.Response) := r.withHeader "etag" tag |>.withHeader "cache-control" files.cacheControl |>.withHeader "accept-ranges" "bytes" |>.withHeader "x-content-type-options" "nosniff"
   if let some value := req.http.header? "if-none-match" then
     if matchesTag value tag then return headers ((HTTP.text "").withStatus .notModified)
-  let selected := if (req.http.header? "if-range").isSome then none
-    else (req.http.header? "range").bind (byteRange · size)
+  let selected := if Standards.applyFileRange req.http.method size (req.http.header? "if-range").isSome then
+      (req.http.header? "range").bind (byteRange · size)
+    else none
   match selected with
   | some (.error _) =>
     return headers (((HTTP.text "").withStatus .rangeNotSatisfiable).withHeader "content-range" s!"bytes */{size}")

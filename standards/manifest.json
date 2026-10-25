@@ -1,0 +1,94 @@
+{
+  "sources": [
+    {
+      "file": "sources/rfc2046.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc2046.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc2046.txt",
+      "sha256": "7ac4096b9263e11a704f06892638258ac1ddc0394dd75ffdc171e7b5ba0123e0",
+      "bytes": 105854,
+      "retrieved_utc": "2026-10-25T09:53:44.774146+00:00",
+      "last_modified": null,
+      "etag": "W/\"6225c196e3c5a20155f3a2082aea2801\""
+    },
+    {
+      "file": "sources/rfc3986.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc3986.txt",
+      "sha256": "3102dae4b68cebe40337730312fcb612297b8928547267e8b3d1ee6002b2d683",
+      "bytes": 141811,
+      "retrieved_utc": "2026-10-25T09:53:44.796515+00:00",
+      "last_modified": null,
+      "etag": "W/\"45bc1160a280c34b923309ae91ff283a\""
+    },
+    {
+      "file": "sources/rfc4648.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc4648.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc4648.txt",
+      "sha256": "84e14418f795d503be5f34bf23ce4ebaa119e9ec7c9f667d8caeb111385b178f",
+      "bytes": 35491,
+      "retrieved_utc": "2026-10-25T09:53:44.777832+00:00",
+      "last_modified": null,
+      "etag": "W/\"7310a3207a064b6b5f41636eb8229c77\""
+    },
+    {
+      "file": "sources/rfc6750.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc6750.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc6750.txt",
+      "sha256": "9dc385cf4ecdd85024e5a95e447ede9230e11700bf35251906b25b37557d604b",
+      "bytes": 38949,
+      "retrieved_utc": "2026-10-25T09:53:44.766378+00:00",
+      "last_modified": null,
+      "etag": "W/\"a793ba4cad0e203f8e1fad55e32082a4\""
+    },
+    {
+      "file": "sources/rfc7578.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc7578.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc7578.txt",
+      "sha256": "813277f91c6c65c9047da9e9a8f1f0c19c1fb4bb1aaeea944bcf3bbdcc2eef49",
+      "bytes": 30240,
+      "retrieved_utc": "2026-10-25T09:53:44.840452+00:00",
+      "last_modified": null,
+      "etag": "W/\"370deaed094b73cee397be7f65c041a6\""
+    },
+    {
+      "file": "sources/rfc7617.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc7617.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc7617.txt",
+      "sha256": "bc941321da9912fbb1bc92ad1820848ddfd3283dbfbc30f26ea2800bdaf541db",
+      "bytes": 30163,
+      "retrieved_utc": "2026-10-25T09:53:44.846553+00:00",
+      "last_modified": null,
+      "etag": "W/\"95229941ed5be827a216ad3533c0d1f8\""
+    },
+    {
+      "file": "sources/rfc9110.txt",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "resolved_url": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "sha256": "21c1cdce6ab0e5509b04d84a28000836c7a087cf786efe6f04877ebfff47232a",
+      "bytes": 502941,
+      "retrieved_utc": "2026-10-25T09:53:44.870830+00:00",
+      "last_modified": null,
+      "etag": "W/\"7c9fc097e78bd883e559172c885e074c\""
+    },
+    {
+      "file": "sources/whatwg-url.html",
+      "url": "https://url.spec.whatwg.org/",
+      "resolved_url": "https://url.spec.whatwg.org/",
+      "sha256": "08cb42a9a8575dab006676378c846fdd8a72d06897c27929aa51eaf099656be4",
+      "bytes": 703601,
+      "retrieved_utc": "2026-10-25T09:53:44.883646+00:00",
+      "last_modified": "Mon, 19 Oct 2026 11:58:10 GMT",
+      "etag": "\"6ad605d2-abc71\""
+    },
+    {
+      "file": "sources/whatwg-sse.html",
+      "url": "https://html.spec.whatwg.org/multipage/server-sent-events.html",
+      "resolved_url": "https://html.spec.whatwg.org/multipage/server-sent-events.html",
+      "sha256": "f277e08dd9f2b70c60a50848970a9081e63a8f7a100137f711028d27b9174f9c",
+      "bytes": 76654,
+      "retrieved_utc": "2026-10-25T09:53:44.890310+00:00",
+      "last_modified": "Thu, 22 Oct 2026 21:25:39 GMT",
+      "etag": "\"6ada7f53-12b6e\""
+    }
+  ]
+}

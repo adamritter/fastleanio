@@ -15,6 +15,7 @@ jobs:
       - run: npm ci --prefix bench/express
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo build --release --locked --manifest-path bench/axum/Cargo.toml
+      - run: python3 scripts/verify_standards.py --output results/ci-standards
       - run: .lake/build/bin/feature_checks
       - run: .lake/build/bin/action_checks 20261025
       - name: Fresh socket and lifecycle checks
