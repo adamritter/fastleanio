@@ -1,0 +1,16 @@
+threads = {}
+function setup(thread) table.insert(threads, thread) end
+valid=0; errors=0
+wrk.method="POST"
+wrk.path="/form"
+wrk.body="\110\097\109\101\061\110\097\109\101\045\057\048\049\053\049\054\056\057\054\038\099\111\117\110\116\061\052\057\051\053\048"
+wrk.headers["Content-Type"]="application/x-www-form-urlencoded"
+expected="\110\097\109\101\045\057\048\049\053\049\054\056\057\054\058\052\057\051\053\049"
+function response(status, headers, body)
+ if status == 200 and body == expected and headers["x-middleware"] == "ran" then valid=valid+1 else errors=errors+1 end
+end
+function done(summary, latency, requests)
+ local n,e=0,0
+ for _,t in ipairs(threads) do n=n+t:get("valid");e=e+t:get("errors") end
+ io.write(string.format("VALIDATED %d ERRORS %d REQUESTS %d\n",n,e,summary.requests))
+end

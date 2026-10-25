@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "final_source_checkpoint": "d49b70cbc15dd92f8d75dfb961b767555c614edd",
+  "initial_source_checkpoint": "bbdbad638a791a49dc1c3e395f68e21348c67e84",
+  "reported_sources": {
+    "fastleanio": "comparison/results.json",
+    "express": "comparison/results.json",
+    "axum": "axum-nodelay/results.json"
+  },
+  "medians": {
+    "fastleanio": {
+      "plain": 78357.14,
+      "routing": 67175.56,
+      "query": 61475.71,
+      "json": 58853.12,
+      "form": 59021.31,
+      "multipart": 34591.91,
+      "bearer": 69499.5,
+      "basic": 64805.04,
+      "logging": 76681.69,
+      "file_64k": 11097.02,
+      "range_1k": 11804.41,
+      "sse_4_events": 22145.21,
+      "sse_delayed_2ms": 9995.31,
+      "async_2ms": 18974.75
+    },
+    "express": {
+      "plain": 8745.57,
+      "routing": 9042.99,
+      "query": 9055.05,
+      "json": 7295.43,
+      "form": 7082.65,
+      "multipart": 5260.39,
+      "bearer": 8708.53,
+      "basic": 8236.99,
+      "logging": 8474.23,
+      "file_64k": 3795.04,
+      "range_1k": 4348.36,
+      "sse_4_events": 8459.85,
+      "sse_delayed_2ms": 7032.25,
+      "async_2ms": 9418.75
+    },
+    "axum": {
+      "plain": 102909.85,
+      "routing": 101046.93,
+      "query": 104226.78,
+      "json": 100942.94,
+      "form": 98472.49,
+      "multipart": 73783.99,
+      "bearer": 109285.8,
+      "basic": 104387.13,
+      "logging": 102820.77,
+      "file_64k": 12517.41,
+      "range_1k": 15106.79,
+      "sse_4_events": 93319.9,
+      "sse_delayed_2ms": 19581.43,
+      "async_2ms": 17937.38
+    }
+  },
+  "selected_measured_runs": 126,
+  "selected_validated_responses": 27226064,
+  "errors": 0,
+  "final_fresh_correctness": {
+    "fastleanio": 270,
+    "express": 254,
+    "axum": 254
+  },
+  "source_and_binary_changes_between_blocks": [
+    "/home/ubuntu/src/affine-field-lambda-20260912/fastleanio/bench/axum/target/release/fastleanio-axum-baseline",
+    "bench/axum/src/main.rs"
+  ],
+  "original_axum_rows_diagnostic_only": true,
+  "old_new_feature_server_source_identical": true,
+  "final_correctness_source_and_binary_identical_to_corrected_checkpoint": true
+}
