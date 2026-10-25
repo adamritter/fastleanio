@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "seed": 12796257187675734704,
+  "workers": [
+    1,
+    4
+  ],
+  "checked_cases": 136,
+  "details": [
+    {
+      "workers": 1,
+      "case": "wait-handler",
+      "cancel_seconds": 0.010796594084240496,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "wait-stream",
+      "cancel_seconds": 0.010753265931271017,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 1,
+      "case": "late",
+      "cancel_seconds": 0.01064043294172734,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 1,
+      "case": "backpressure",
+      "pulls_before": 15,
+      "pulls_after": 16
+    },
+    {
+      "workers": 1,
+      "case": "heartbeat",
+      "beats": 70
+    },
+    {
+      "workers": 4,
+      "case": "wait-handler",
+      "cancel_seconds": 0.010668976930901408,
+      "counts": {
+        "cancelled": 1,
+        "closed": 0,
+        "entered": 1,
+        "opened": 0,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "wait-stream",
+      "cancel_seconds": 0.010637744911946356,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 1
+      }
+    },
+    {
+      "workers": 4,
+      "case": "late",
+      "cancel_seconds": 0.010580176021903753,
+      "counts": {
+        "cancelled": 1,
+        "closed": 1,
+        "entered": 1,
+        "opened": 1,
+        "pulls": 0
+      }
+    },
+    {
+      "workers": 4,
+      "case": "backpressure",
+      "pulls_before": 15,
+      "pulls_after": 16
+    },
+    {
+      "workers": 4,
+      "case": "heartbeat",
+      "beats": 70
+    }
+  ],
+  "binary_sha256": "1166ab4ac600b30df6874f230c037bfb773091f4f18bdea5c430ea9d76f5cf80"
+}

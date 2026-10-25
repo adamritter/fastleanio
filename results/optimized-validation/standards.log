@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "normative_sources": 9,
+  "checked_theorems": 51,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ]
+}

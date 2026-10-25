@@ -1,0 +1,10 @@
+{
+  "benchmark_source_commit": "95437e6ea0729e348055eaac906074affded7b73",
+  "ci_source_commit": "ee97c2181c18e21861114dee7893acf7c20363bc",
+  "changed_after_frozen_benchmark": [
+    "bench/check.py"
+  ],
+  "change": "Resolve Node via PATH for CI portability; on Lambda this is the same /usr/bin/node. All server sources, lockfiles and binaries match the timed checkpoint.",
+  "all_server_source_and_binary_hashes_unchanged": true,
+  "node_path": "/usr/bin/node"
+}
